@@ -2,7 +2,7 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import {AppBar, IconButton, Toolbar} from '@material-ui/core';
+import {AppBar, IconButton, Toolbar, Tooltip} from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import InfoIcon from '@material-ui/icons/Info';
 
@@ -31,21 +31,25 @@ export default (props) => {
                 <img src={LogoText} height='38px' alt='logo with text' className={classes.title}/>
             </div>
 
-            <IconButton
-              aria-label="Github Repo Link"
-              aria-controls="menu-appbar"
-              color="inherit"
-            >
-              <GitHubIcon />
-            </IconButton>           
-            
-            <IconButton
-              aria-label="About"
-              aria-controls="menu-appbar"
-              color="inherit"
-            >
-              <InfoIcon />
-            </IconButton>    
+            <Tooltip title="Github Repo Link">
+                <IconButton
+                aria-label="github repo"
+                aria-controls="menu-appbar"
+                color="inherit">
+                    <a href="https://github.com/rahul-jha98/Artistify.ai" style={{color: 'inherit', textDecoration:'none', height: 24}}>
+                        <GitHubIcon />
+                    </a>
+                </IconButton>           
+            </Tooltip>
+
+            <Tooltip title="About">
+                <IconButton
+                aria-label="about"
+                aria-controls="menu-appbar"
+                color="inherit">
+                    <InfoIcon />    
+                </IconButton>   
+            </Tooltip> 
           </Toolbar>
         </AppBar>
       </div>
