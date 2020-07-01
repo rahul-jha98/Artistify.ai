@@ -118,16 +118,18 @@ class StyleImageSelector extends React.Component {
                     className={classes.formControl} 
                     sliderChangeHandler={this.onSliderValueChange}
                     value={this.state.imgHeight}
-                    min={250}
+                    min={100}
                     max={400}
-                    step={1}/>
-                <FormControl variant="outlined" className={classes.formControl}>
-                    <InputLabel id="content-label">Style Image</InputLabel>
+                    step={1}
+                    disabled={this.props.isDisabled}/>
+                <FormControl variant="outlined" className={classes.formControl} disabled={this.props.isDisabled}>
+                    <InputLabel id="content-label" color="secondary">Style Image</InputLabel>
                     <Select
                         labelId="content-label"
                         id="content-select"
                         value={this.state.image}
                         onChange={this.handleMenu}
+                        color="secondary"
                         label="Style Image">
                         {this.state.menulist.map(option => (<MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>))}
                     </Select>

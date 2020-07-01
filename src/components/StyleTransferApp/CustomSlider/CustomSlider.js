@@ -6,7 +6,7 @@ import Slider from '@material-ui/core/Slider';
 const CustomSlider = withStyles((theme) => ({
     root: {
       height: 6,
-      color: theme.palette.primary.light
+      color: theme.palette.secondary.light,
     },
     thumb: {
       height: 18,
@@ -27,9 +27,8 @@ const CustomSlider = withStyles((theme) => ({
       color: '#cfd8dc',
       height: 6,
       borderRadius: 4,
-    },
+    }
   }))(Slider);
-
 export default (props) => {
     return (
         <CustomSlider 

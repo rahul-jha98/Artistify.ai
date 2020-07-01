@@ -118,15 +118,17 @@ class ContentImageSelector extends React.Component {
                     value={this.state.imgHeight}
                     min={250}
                     max={400}
-                    step={1}/>
-                <FormControl variant="outlined" className={classes.formControl}>
-                    <InputLabel id="content-label">Content Image</InputLabel>
+                    step={1}
+                    disabled={this.props.isDisabled}/>
+                <FormControl variant="outlined" className={classes.formControl} disabled={this.props.isDisabled}>
+                    <InputLabel id="content-label" color='secondary'>Content Image</InputLabel>
                     <Select
                         labelId="content-label"
                         id="content-select"
                         value={this.state.image}
                         onChange={this.handleMenu}
-                        label="Content Image">
+                        label="Content Image"
+                        color="secondary">
                         {this.state.menulist.map(option => (<MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>))}
                     </Select>
                 </FormControl>
