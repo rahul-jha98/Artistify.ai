@@ -31,6 +31,7 @@ class ContentImageSelector extends React.Component {
         super(props);
         this.state = {
             image: 'stata',
+            imageSrc: "./content/stata.jpg",
             imgHeight: 250,
             menulist: [
                 {value: 'webcam', name: "Take a picture"},
@@ -51,7 +52,7 @@ class ContentImageSelector extends React.Component {
         } else if (event.target.value === 'upload') {
             return;
         } 
-        this.setState({image: event.target.value});
+        this.setState({image: event.target.value, imageSrc: "./content/" + event.target.value + ".jpg"});
     }
 
     onSliderValueChange = (event, newValue) => {
@@ -68,15 +69,15 @@ class ContentImageSelector extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const imageSrc = "./content/" + this.state.image + ".jpg"
+        
 
         return (
             <div className='selector-container'>
-                <img className="center" src={imageSrc} height={this.state.imgHeight} alt="content_img"/>
+                <img className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img"/>
                 <br/>
                 <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
                     <Typography style={{display:'inline-block', marginRight:'6px'}}>
-                        Content Image Size
+                        Content Image size
                     </Typography>
                     <HelpOutlineOutlinedIcon  
                         fontSize='small' color='action' 
