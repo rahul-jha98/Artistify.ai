@@ -34,6 +34,8 @@ export default (props) => {
     return (
         <CustomSlider 
             onChange={props.sliderChangeHandler} 
-            {...props}/>
+            {...props}
+            style={{marginTop: 2}}
+            value={props.value}/>
     )
 }
