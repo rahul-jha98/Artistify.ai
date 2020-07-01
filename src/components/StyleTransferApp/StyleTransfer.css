@@ -12,9 +12,19 @@
     width: 100%;
 }
 
+.outputs {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .inputs {
     display: flex;
     flex-wrap: wrap;
+}
+
+.margin {
+    margin-bottom: 30px;
+    margin-top: 50px;
 }
 
 .container {

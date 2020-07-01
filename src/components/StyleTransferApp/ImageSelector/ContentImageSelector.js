@@ -73,7 +73,7 @@ class ContentImageSelector extends React.Component {
 
         return (
             <div className='selector-container'>
-                <img className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img"/>
+                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img"/>
                 <br/>
                 <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
                     <Typography style={{display:'inline-block', marginRight:'6px'}}>
