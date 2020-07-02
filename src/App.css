@@ -5,3 +5,45 @@
 .gutter {
   padding-bottom: 128px;
 }
+
+.content-area {
+  display: flex;
+  flex-direction: column;
+  min-height: 94vh;
+}
+
+.expanded-content {
+  flex: 1;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+@media (min-width: 576px) {
+  .container {
+      max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+      max-width: 740px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+      max-width: 980px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+      max-width: 1160px;
+  }
+}

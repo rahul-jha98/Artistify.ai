@@ -36,7 +36,7 @@ export default (props) => {
                 aria-label="github repo"
                 aria-controls="menu-appbar"
                 color="inherit">
-                    <a href="https://github.com/rahul-jha98/Artistify.ai" style={{color: 'inherit', textDecoration:'none', height: 24}}>
+                    <a href="https://github.com/rahul-jha98/Artistify.ai" rel="noopener noreferrer" target='_blank' style={{color: 'inherit', textDecoration:'none', height: 24}}>
                         <GitHubIcon />
                     </a>
                 </IconButton>           

@@ -95,13 +95,8 @@ class StyleTransferApp extends React.Component{
 
     render() {
         const {classes} = this.props;
-        const steps = [
-            'Generating Representation',
-            'Styling Images',
-            'Styling Images'
-        ]
         return (
-            <div className='container'>
+            <div className='container expanded-content'>
                 <div className='inputs'>
                     <ContentImageSelector isDisabled={this.state.isDisabled} refObject={this.contentRef}/>
                     <StyleImageSelector isDisabled={this.state.isDisabled} refObject={this.styleRef}/>
