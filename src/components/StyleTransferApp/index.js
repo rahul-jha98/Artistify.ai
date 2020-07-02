@@ -15,6 +15,8 @@ import StyleImageSelector from './ImageSelector/StyleImageSelector';
 import Slider from './CustomSlider/CustomSlider';
 import './StyleTransfer.css';
 
+import StyleTransferModel from '../../tensorflowjs/StyleTransferModel';
+
 const useStyles = (theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -45,8 +47,17 @@ class StyleTransferApp extends React.Component{
             stepper: -1
         }
         this.contentRef = React.createRef();
-        this.childRef = React.createRef();
+        this.styleRef = React.createRef();
         this.bottomRef = React.createRef();
+        this.outputRef = React.createRef();
+
+        this.styleTranferModel = new StyleTransferModel(
+            './models/lite/style/model.json', 
+            './models/lite/transformer/model.json');
+        
+        this.styleTranferModel.setValueAccessors(this.contentRef, this.styleRef, this.outputRef, (step) => {
+            this.setState({stepper: step});
+        })
     }
 
     onSliderValueChange = (event, newValue) => {
@@ -63,34 +74,30 @@ class StyleTransferApp extends React.Component{
 
     onBeginStylization = () => {
         this.setState({isDisabled: true});
-        this.resetOutputAnimation();
+        this.resetAndBegin();
+        
     }
 
-    resetOutputAnimation = () => {
+    resetAndBegin = () => {
         this.setState({
             contentSrc: null,
             loading: 0, 
             stepper: 0,
             height: this.contentRef.current.height, 
             width: this.contentRef.current.width
-        });
-        console.log(this.bottomRef);
-        
-        setTimeout(() => {
-            this.bottomRef.current.scrollIntoView({ behavior: "smooth" });
-            this.setState({stepper: 1});
-            setTimeout(() => {
-                this.setState({stepper: 2});
-                setTimeout(() => {
-                    this.setState({
-                        stepper: -1,
-                        contentSrc: this.contentRef.current.src,
-                        loading: 1,
-                        isDisabled: false
-                    })
-                }, 500);
-            }, 500);
-        }, 500);
+        }, () => {
+            // this.bottomRef.current.scrollIntoView({ behavior: "smooth" })
+            
+            this.styleTranferModel.getSyledImage((styledImage) => {
+                this.setState({
+                    stepper: -1,
+                    contentSrc: styledImage,
+                    loading: 1,
+                    isDisabled: false
+                });
+            });
+    
+        }); 
     }
 
     render() {
@@ -104,12 +111,17 @@ class StyleTransferApp extends React.Component{
             <div className='container'>
                 <div className='inputs'>
                     <ContentImageSelector isDisabled={this.state.isDisabled} refObject={this.contentRef}/>
-                    <StyleImageSelector isDisabled={this.state.isDisabled}/>
+                    <StyleImageSelector isDisabled={this.state.isDisabled} refObject={this.styleRef}/>
                 </div>
                 <br/>
                 <div className='outputs'>
                     <div className='selector-container'>
                         <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
+                            {this.state.loading !== -1 ?
+                                this.state.loading !== 0 ?
+                                <canvas ref={this.outputRef} className="center margin" height={this.state.height} alt="content_img"/>  :
+                                <Skeleton className="center margin" variant='rect' width={this.state.width} height={this.state.height}/>
+                                : null }
                             <Typography style={{display:'inline-block', marginRight:'6px', marginLeft: 5}}>
                                 Stylization Strength
                             </Typography>
@@ -164,19 +176,15 @@ class StyleTransferApp extends React.Component{
                                 Begin Stylization
                             </Button>
                             <br/>
-                            {this.state.loading !== -1 ?
-                                this.state.loading !== 0 ?
-                                <img className="center margin gutter" src={this.state.contentSrc} height={this.state.height} alt="content_img"/>  :
-                                <Skeleton className="center margin" variant='rect' width={this.state.width} height={this.state.height}/>
-                                : null }
-                            {this.state.stepper !==-1 ? 
+                            
+                            {/* {this.state.stepper !==-1 ? 
                                 <Stepper ref={this.bottomRef} activeStep={this.state.stepper} alternativeLabel>
                                     {steps.map((label) => (
                                     <Step key={label}>
                                         <StepLabel>{label}</StepLabel>
                                     </Step>
                                     ))}
-                                </Stepper> : null}
+                                </Stepper> : null} */}
                         </div>
                     </div>
                 </div>
