@@ -6,9 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import Popover from '@material-ui/core/Popover';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
 
 import ContentImageSelector from './ImageSelector/ContentImageSelector';
 import StyleImageSelector from './ImageSelector/StyleImageSelector';
@@ -44,20 +41,16 @@ class StyleTransferApp extends React.Component{
             contentSrc: null,
             height: 300,
             loading: -1,
-            stepper: -1
         }
         this.contentRef = React.createRef();
         this.styleRef = React.createRef();
-        this.bottomRef = React.createRef();
         this.outputRef = React.createRef();
 
         this.styleTranferModel = new StyleTransferModel(
             './models/lite/style/model.json', 
             './models/lite/transformer/model.json');
         
-        this.styleTranferModel.setValueAccessors(this.contentRef, this.styleRef, this.outputRef, (step) => {
-            this.setState({stepper: step});
-        })
+        this.styleTranferModel.setValueAccessors(this.contentRef, this.styleRef, this.outputRef);
     }
 
     onSliderValueChange = (event, newValue) => {
@@ -88,7 +81,7 @@ class StyleTransferApp extends React.Component{
         }, () => {
             // this.bottomRef.current.scrollIntoView({ behavior: "smooth" })
             
-            this.styleTranferModel.getSyledImage((styledImage) => {
+            this.styleTranferModel.getSyledImage(this.state.strength, (styledImage) => {
                 this.setState({
                     stepper: -1,
                     contentSrc: styledImage,

@@ -23,15 +23,14 @@ class StyleTransferModel {
         return await tf.loadGraphModel(path_to_model);
     }
 
-    setValueAccessors(contentRef, styleRef, outputRef, progressFunction) {
+    setValueAccessors(contentRef, styleRef, outputRef) {
         this.contentRef = contentRef;
         this.styleRef = styleRef;
         this.outputRef = outputRef;
-        this.updateProgressStepTo= progressFunction;
     }
 
-    getSyledImage(onImageGenerated) {
-        this.runModel(onImageGenerated);
+    getSyledImage(style_ratio, onImageGenerated) {
+        this.runModel(style_ratio, onImageGenerated);
         // setTimeout(() => {
         //     this.updateProgressStepTo(1);
         //     setTimeout(() => {
@@ -43,15 +42,31 @@ class StyleTransferModel {
         // }, 500);
     }
 
-    async runModel(onImageGenerated) {
+    async runModel(style_ratio, onImageGenerated) {
+        await tf.nextFrame();
+        await tf.nextFrame();
         await tf.nextFrame();
         let features = await tf.tidy(() => {
             return this.styleNetwork.predict(
                 tf.browser.fromPixels(this.styleRef.current).toFloat().div(tf.scalar(255)).expandDims());
         });
 
-        await tf.nextFrame();
-        await tf.nextFrame();
+        if (style_ratio !== 1.0) {
+            const content_features = await tf.tidy(() => {
+                return this.styleNetwork.predict(tf.browser.fromPixels(this.contentRef.current).toFloat().div(tf.scalar(255)).expandDims());
+              });
+            const style_features = features;
+
+            features = await tf.tidy(() => {
+                const styleFeaturesScaled= style_features.mul(tf.scalar(style_ratio));
+                const contentFeaturesScaled = content_features.mul(tf.scalar(1.0-style_ratio));
+                return styleFeaturesScaled.addStrict(contentFeaturesScaled);
+              });
+            
+            content_features.dispose();
+            style_features.dispose();
+        }
+        
         const stylizedImage = await tf.tidy(() => {
             return this.transformerNetwork.predict(
                 [tf.browser.fromPixels(this.contentRef.current).toFloat().div(tf.scalar(255)).expandDims(), 
