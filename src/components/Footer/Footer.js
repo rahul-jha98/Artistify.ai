@@ -23,10 +23,10 @@ export default (props) => {
                     Made with <FavoriteIcon fontSize='small' style={{color: '#b71c1c', marginBottom: '-3px'}}/> by <b>Rahul Jha</b>
                 </Typography>
 
-                <a href="https://github.com/rahul-jha98/Artistify.ai" rel="noopener noreferrer" target='_blank' style={{textDecoration:'none'}}>
+                <a href="https://github.com/rahul-jha98" rel="noopener noreferrer" target='_blank' style={{textDecoration:'none'}}>
                     <GitHubIcon className='fa' color='action' fontSize='small'/>
                 </a>
-                <a href="https://github.com/rahul-jha98"rel="noopener noreferrer" target='_blank' style={{textDecoration:'none'}}>
+                <a href="https://www.linkedin.com/in/rahul-jha-84a204178/" rel="noopener noreferrer" target='_blank' style={{textDecoration:'none'}}>
                     <LinkedInIcon className='fa' color='action' fontSize='small'/>
                 </a>
                 
