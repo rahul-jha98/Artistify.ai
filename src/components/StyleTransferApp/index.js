@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import Popover from '@material-ui/core/Popover';
 import Skeleton from '@material-ui/lab/Skeleton';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import ContentImageSelector from './ImageSelector/ContentImageSelector';
 import StyleImageSelector from './ImageSelector/StyleImageSelector';
@@ -40,7 +41,7 @@ class StyleTransferApp extends React.Component{
             anchorEl: null,
             contentSrc: null,
             height: 300,
-            loading: -1,
+            loading: -2,
         }
         this.contentRef = React.createRef();
         this.styleRef = React.createRef();
@@ -50,6 +51,14 @@ class StyleTransferApp extends React.Component{
             './models/lite/style/model.json', 
             './models/lite/transformer/model.json');
         
+        this.styleTranferModel.donwloadModel(
+            () => {
+                this.setState({loading: -1});
+            },
+            () => {
+                this.setState({snackbarMessage: "Couldn't Donwload Model"})
+            }
+        )
         this.styleTranferModel.setValueAccessors(this.contentRef, this.styleRef, this.outputRef);
     }
 
@@ -71,6 +80,9 @@ class StyleTransferApp extends React.Component{
         
     }
 
+    refreshPage = () => {
+        window.location.reload();
+    }
     resetAndBegin = () => {
         this.setState({
             contentSrc: null,
@@ -78,17 +90,21 @@ class StyleTransferApp extends React.Component{
             stepper: 0,
             height: this.contentRef.current.height, 
             width: this.contentRef.current.width
-        }, () => {
-            // this.bottomRef.current.scrollIntoView({ behavior: "smooth" })
-            
-            this.styleTranferModel.getSyledImage(this.state.strength, (styledImage) => {
-                this.setState({
-                    stepper: -1,
-                    contentSrc: styledImage,
-                    loading: 1,
-                    isDisabled: false
-                });
-            });
+        }, () => {            
+            this.styleTranferModel
+                .generateStyledImage(this.state.strength, 
+                    (styledImage) => {
+                        this.setState({
+                            stepper: -1,
+                            contentSrc: styledImage,
+                            loading: 1,
+                            isDisabled: false
+                        });
+                    },
+                    () => {
+                        this.setState({snackbarMessage: 'Error while generating image',
+                                        isDisabled: false})
+                    });
     
         }); 
     }
@@ -105,7 +121,7 @@ class StyleTransferApp extends React.Component{
                 <div className='outputs'>
                     <div className='selector-container'>
                         <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
-                            {this.state.loading !== -1 ?
+                            {this.state.loading > -1 ?
                                 this.state.loading !== 0 ?
                                 <canvas ref={this.outputRef} className="center margin" height={this.state.height} alt="content_img"/>  :
                                 <Skeleton className="center margin" variant='rect' width={this.state.width} height={this.state.height}/>
@@ -160,22 +176,30 @@ class StyleTransferApp extends React.Component{
                                 size="large" 
                                 color="secondary"
                                 onClick={this.onBeginStylization}
-                                disabled={this.state.isDisabled}>
-                                Begin Stylization
+                                disabled={this.state.isDisabled || this.state.loading === -2}>
+                                {this.state.loading === -2? 'Downloading Model' : 'Begin Stylization'}
                             </Button>
                             <br/>
-                            
-                            {/* {this.state.stepper !==-1 ? 
-                                <Stepper ref={this.bottomRef} activeStep={this.state.stepper} alternativeLabel>
-                                    {steps.map((label) => (
-                                    <Step key={label}>
-                                        <StepLabel>{label}</StepLabel>
-                                    </Step>
-                                    ))}
-                                </Stepper> : null} */}
                         </div>
                     </div>
                 </div>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.snackbarMessage}
+                    autoHideDuration={3000}
+                    onClose={() => this.setState({snackbarMessage: ''})}
+                    message={this.state.snackbarMessage}
+                    action={
+                        <React.Fragment>
+                            <Button color="secondary" size="small" onClick={this.refreshPage}>
+                                Reload
+                            </Button>
+                        </React.Fragment>
+                    }
+                />
             </div>
             
         )
