@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Artistify.ai/precache-manifest.f37e638fcadad93caacb886b998bd1ce.js"
+  "/Artistify.ai/precache-manifest.944300ae22e31595025f1486d53ee6d4.js"
 );
 
 self.addEventListener('message', (event) => {
