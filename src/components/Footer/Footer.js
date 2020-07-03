@@ -10,7 +10,7 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      backgroundColor: '#eeeeee',
+      backgroundColor: theme.palette.type==='dark' ? '#424242' : '#eeeeee',
       padding: '32px 8px'
     }
   }));

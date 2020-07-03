@@ -19,12 +19,12 @@ const CustomSlider = withStyles((theme) => ({
       left: 'calc(-50% + 4px)',
     },
     track: {
-      color: '#cfd8dc',
+      color: theme.palette.type==='dark' ? '#3f3f3f' : '#cfd8dc',
       height: 6,
       borderRadius: 4,
     },
     rail: {
-      color: '#cfd8dc',
+      color: theme.palette.type==='dark' ? '#3f3f3f' : '#cfd8dc',
       height: 6,
       borderRadius: 4,
     }

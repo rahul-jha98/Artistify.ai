@@ -48,8 +48,8 @@ class StyleTransferApp extends React.Component{
         this.outputRef = React.createRef();
 
         this.styleTranferModel = new StyleTransferModel(
-            './models/lite/style/model.json', 
-            './models/lite/transformer/model.json');
+            this.props.styleNetPath, 
+            this.props.transferNetPath);
         
         this.styleTranferModel.donwloadModel(
             () => {
