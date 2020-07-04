@@ -1,24 +1,23 @@
 import React from 'react';
-import './App.css';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
+
 import HomeLite from './components/Home/HomeLite';
 import HomePro from './components/Home/HomePro';
+import ModeChooser from './components/ModeChooser/ModeChooser';
+
+
+import './App.css';
 
 function App() {
-  const [page, setPage] = React.useState(0);
-  console.log(page);
   return (
     <div className="App">
-      {
-        page === 0 ? 
-        <React.Fragment>
-          <button onClick={() => setPage(1)}>Lite Mode</button>
-          <button onClick={() => setPage(2)}>Pro Mode</button>
-        </React.Fragment>
-        :
-        page === 1?
-        <HomeLite/>:
-        <HomePro/>
-      }
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Switch>
+              <Route exact path="/" component={ModeChooser} />
+              <Route path="/lite" component={HomeLite} />
+              <Route path="/pro" component={HomePro} />
+            </Switch>
+      </BrowserRouter>
     </div>
   );
 }

@@ -5,7 +5,6 @@ class StyleTransferModel {
     constructor(path_style_network, path_transformer_network) {
         this.path_style_network = path_style_network;
         this.path_transformer_network = path_transformer_network;
-        
     }
 
     donwloadModel(onDownloadSuccessful, onDownloadFailed) {
