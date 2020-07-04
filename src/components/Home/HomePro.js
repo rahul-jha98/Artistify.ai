@@ -21,7 +21,6 @@ const theme = createMuiTheme({
   });
 
 export default (props) => {  
-    console.log(theme.palette.primary.main)
     return (
         <ThemeProvider theme={theme}>
             <React.Fragment>

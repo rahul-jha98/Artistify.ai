@@ -23,6 +23,12 @@
   margin-left: auto;
 }
 
+.grid {
+  padding-right: 16px;
+  padding-left: 16px;
+  margin-right: auto;
+  margin-left: auto;
+}
 
 @media (min-width: 576px) {
   .container {
@@ -34,16 +40,25 @@
   .container {
       max-width: 740px;
   }
+  .grid {
+    max-width: 740px;
+  }
 }
 
 @media (min-width: 992px) {
   .container {
       max-width: 980px;
   }
+  .grid {
+    max-width: 985px;
+  }
 }
 
 @media (min-width: 1200px) {
   .container {
       max-width: 1160px;
+  } 
+  .grid {
+    max-width: 1160px;
   }
 }

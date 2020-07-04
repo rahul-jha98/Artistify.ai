@@ -1,0 +1,16 @@
+.title {
+    display: flex;
+    margin: 8px auto;
+    text-align: center;
+    height: 20vh;
+    min-height: 80px;
+    flex-direction: column;
+}
+
+.logoimg {
+    
+    max-width: 100%;
+    width: auto;
+    margin: auto;
+    margin-bottom: 0;
+}
