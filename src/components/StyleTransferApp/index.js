@@ -17,22 +17,22 @@ import StyleTransferModel from '../../tensorflowjs/StyleTransferModel';
 
 const useStyles = (theme) => ({
     formControl: {
-      margin: theme.spacing(1),
-      marginLeft: 0,
-      marginRight: 0,
-      width: '100%',
-      maxWidth: 600,
-      textAlign: 'left'
+        margin: theme.spacing(1),
+        marginLeft: 0,
+        marginRight: 0,
+        width: '100%',
+        maxWidth: 600,
+        textAlign: 'left'
     },
     popover: {
-      pointerEvents: 'none',
+        pointerEvents: 'none',
     },
     paper: {
-      padding: theme.spacing(2),
+        padding: theme.spacing(2),
     },
-  });
+});
 
-class StyleTransferApp extends React.Component{
+class StyleTransferApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,36 +48,36 @@ class StyleTransferApp extends React.Component{
         this.outputRef = React.createRef();
 
         this.styleTranferModel = new StyleTransferModel(
-            this.props.styleNetPath, 
+            this.props.styleNetPath,
             this.props.transferNetPath);
-        
+
         this.styleTranferModel.donwloadModel(
             () => {
-                this.setState({loading: -1});
+                this.setState({ loading: -1 });
             },
             () => {
-                this.setState({snackbarMessage: "Couldn't Donwload Model"})
+                this.setState({ snackbarMessage: "Couldn't Donwload Model" })
             }
         )
         this.styleTranferModel.setValueAccessors(this.contentRef, this.styleRef, this.outputRef);
     }
 
     onSliderValueChange = (event, newValue) => {
-        this.setState({strength: newValue});
+        this.setState({ strength: newValue });
     }
 
     handlePopoverOpen = (event) => {
-        this.setState({anchorEl: event.currentTarget});
+        this.setState({ anchorEl: event.currentTarget });
     }
 
     handlePopoverClose = () => {
-        this.setState({anchorEl: null});
+        this.setState({ anchorEl: null });
     }
 
     onBeginStylization = () => {
-        this.setState({isDisabled: true});
+        this.setState({ isDisabled: true });
         this.resetAndBegin();
-        
+
     }
 
     refreshPage = () => {
@@ -86,13 +86,13 @@ class StyleTransferApp extends React.Component{
     resetAndBegin = () => {
         this.setState({
             contentSrc: null,
-            loading: 0, 
+            loading: 0,
             stepper: 0,
-            height: this.contentRef.current.height, 
+            height: this.contentRef.current.height,
             width: this.contentRef.current.width
-        }, () => {            
+        }, () => {
             this.styleTranferModel
-                .generateStyledImage(this.state.strength, 
+                .generateStyledImage(this.state.strength,
                     (styledImage) => {
                         this.setState({
                             stepper: -1,
@@ -102,85 +102,87 @@ class StyleTransferApp extends React.Component{
                         });
                     },
                     () => {
-                        this.setState({snackbarMessage: 'Error while generating image',
-                                        isDisabled: false})
+                        this.setState({
+                            snackbarMessage: 'Error while generating image',
+                            isDisabled: false
+                        })
                     });
-    
-        }); 
+
+        });
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <div className='container expanded-content'>
                 <div className='inputs'>
-                    <ContentImageSelector isDisabled={this.state.isDisabled} refObject={this.contentRef}/>
-                    <StyleImageSelector isDisabled={this.state.isDisabled} refObject={this.styleRef}/>
+                    <ContentImageSelector isDisabled={this.state.isDisabled} refObject={this.contentRef} />
+                    <StyleImageSelector isDisabled={this.state.isDisabled} refObject={this.styleRef} />
                 </div>
-                <br/>
+                <br />
                 <div className='outputs'>
                     <div className='selector-container'>
                         {this.state.loading > -1 ?
                             this.state.loading !== 0 ?
-                                <canvas ref={this.outputRef} className="center margin" height={this.state.height} alt="content_img"/>  :
-                                <Skeleton className="center margin" variant='rect' width={this.state.width} height={this.state.height}/>
-                            : null }
-                        <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
-                            
-                            <Typography style={{display:'inline-block', marginRight:'6px', marginLeft: 5}}>
+                                <canvas ref={this.outputRef} className="center margin" height={this.state.height} alt="content_img" /> :
+                                <Skeleton className="center margin" variant='rect' width={this.state.width} height={this.state.height} />
+                            : null}
+                        <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle' }}>
+
+                            <Typography style={{ display: 'inline-block', marginRight: '6px', marginLeft: 5 }}>
                                 Stylization Strength
                             </Typography>
-                            <HelpOutlineOutlinedIcon  
-                                fontSize='small' color='action' 
-                                style={{marginBottom:-4}}
+                            <HelpOutlineOutlinedIcon
+                                fontSize='small' color='action'
+                                style={{ marginBottom: -4 }}
                                 aria-owns={this.state.anchorEl ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
                                 onMouseEnter={this.handlePopoverOpen}
-                                onMouseLeave={this.handlePopoverClose}/>
+                                onMouseLeave={this.handlePopoverClose} />
 
                             <Popover
-                                    id="mouse-over-popover"
-                                    className={classes.popover}
-                                    classes={{
+                                id="mouse-over-popover"
+                                className={classes.popover}
+                                classes={{
                                     paper: classes.paper,
-                                    }}
-                                    open={this.state.anchorEl}
-                                    anchorEl={this.state.anchorEl}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    onClose={this.state.handlePopoverClose}
-                                    disableRestoreFocus
-                                >
-                                    <Typography style={{maxWidth: 200, textAlign: 'center'}}>
-                                        Stylization strength is the degree of stylization that is applied. Going left inclines the output closer to the content image while going right deviates it more towards the style image.
+                                }}
+                                open={this.state.anchorEl}
+                                anchorEl={this.state.anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                onClose={this.state.handlePopoverClose}
+                                disableRestoreFocus
+                            >
+                                <Typography style={{ maxWidth: 200, textAlign: 'center' }}>
+                                    Stylization strength is the degree of stylization that is applied. Going left inclines the output closer to the content image while going right deviates it more towards the style image.
                                     </Typography>
-                                </Popover>
-                    
-                            <br/>
-                            <Slider 
-                                className={classes.formControl} 
+                            </Popover>
+
+                            <br />
+                            <Slider
+                                className={classes.formControl}
                                 sliderChangeHandler={this.onSliderValueChange}
                                 value={this.state.strength}
                                 min={0}
                                 max={1}
                                 step={.01}
-                                disabled = {this.state.isDisabled}/>
-                            <br/>
-                            <Button className={classes.formControl}  
-                                variant="contained" 
-                                size="large" 
+                                disabled={this.state.isDisabled} />
+                            <br />
+                            <Button className={classes.formControl}
+                                variant="contained"
+                                size="large"
                                 color="secondary"
                                 onClick={this.onBeginStylization}
                                 disabled={this.state.isDisabled || this.state.loading === -2}>
-                                {this.state.loading === -2? 'Downloading Model' : 'Begin Stylization'}
+                                {this.state.loading === -2 ? 'Downloading Model' : 'Begin Stylization'}
                             </Button>
-                            <br/>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -191,7 +193,7 @@ class StyleTransferApp extends React.Component{
                     }}
                     open={this.state.snackbarMessage}
                     autoHideDuration={3000}
-                    onClose={() => this.setState({snackbarMessage: ''})}
+                    onClose={() => this.setState({ snackbarMessage: '' })}
                     message={this.state.snackbarMessage}
                     action={
                         <React.Fragment>
@@ -202,7 +204,7 @@ class StyleTransferApp extends React.Component{
                     }
                 />
             </div>
-            
+
         )
     }
 }

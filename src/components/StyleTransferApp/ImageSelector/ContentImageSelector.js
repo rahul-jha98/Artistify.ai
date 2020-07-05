@@ -6,6 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import Button from '@material-ui/core/Button';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import Popover from '@material-ui/core/Popover';
 
@@ -13,18 +19,22 @@ import Slider from '../CustomSlider/CustomSlider';
 
 const useStyles = (theme) => ({
     formControl: {
-      margin: theme.spacing(1),
-      width: '100%',
-      maxWidth: 600,
-      textAlign: 'left'
+        margin: theme.spacing(1),
+        width: '100%',
+        maxWidth: 600,
+        textAlign: 'left'
     },
     popover: {
-      pointerEvents: 'none',
+        pointerEvents: 'none',
     },
     paper: {
-      padding: theme.spacing(2),
+        padding: theme.spacing(2),
     },
-  });
+});
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
 
 class ContentImageSelector extends React.Component {
     constructor(props) {
@@ -34,17 +44,25 @@ class ContentImageSelector extends React.Component {
             imageSrc: "./content/stata.jpg",
             imgHeight: 250,
             menulist: [
-                {value: 'webcam', name: "Take a picture"},
-                {value: 'upload', name: "Upload a picture"},
-                {value: 'chicago', name: 'Chicago'},
-                {value: 'diana', name: 'Diana'},
-                {value: 'golden_gate', name: 'Golden Gate'},
-                {value: 'stata', name: 'Stata'},
-                {value: 'statue_of_liberty', name: 'Statue of Liberty'},
+                { value: 'webcam', name: "Take a picture" },
+                { value: 'upload', name: "Upload a picture" },
+                { value: 'chicago', name: 'Chicago' },
+                { value: 'diana', name: 'Diana' },
+                { value: 'golden_gate', name: 'Golden Gate' },
+                { value: 'stata', name: 'Stata' },
+                { value: 'statue_of_liberty', name: 'Statue of Liberty' },
             ],
-            anchorEl: null
+            anchorEl: null,
+            modalOpen: false
         }
         this.uploadRef = React.createRef();
+        this.cameraRef = React.createRef();
+        this.canvasRef = React.createRef();
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    }
+
+    componentWillUnmount = () => {
+        this.onModalCanceled();
     }
 
     onFileChange = (evt) => {
@@ -53,109 +71,124 @@ class ContentImageSelector extends React.Component {
         fileReader.onload = (e) => {
             console.log(e.target.result);
             console.log(file);
-            this.setState({imageSrc: e.target.result, image: 'upload'});
+            this.setState({ imageSrc: e.target.result, image: 'upload' });
         }
         fileReader.readAsDataURL(file);
     }
     handleMenu = (event) => {
         if (event.target.value === 'webcam') {
+            this.setState({ modalOpen: true });
+            navigator.getUserMedia(
+                {
+                    video: true
+                },
+                (stream) => {
+                    this.cameraFeed = stream;
+                    this.cameraRef.current.srcObject = stream;
+                    this.cameraRef.current.play();
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
             return;
         } else if (event.target.value === 'upload') {
             this.uploadRef.current.click();
             return;
-        } 
-        this.setState({image: event.target.value, imageSrc: "./content/" + event.target.value + ".jpg"});
+        }
+        this.setState({ image: event.target.value, imageSrc: "./content/" + event.target.value + ".jpg" });
     }
 
+
+    onModalCanceled = () => {
+        if (!this.cameraFeed) {
+            this.setState({ modalOpen: false });
+            return;
+        }
+        this.cameraFeed.getTracks()[0].stop();
+        this.setState({ modalOpen: false });
+    }
+
+    onCameraCaptureClicked = () => {
+        if (!this.cameraFeed) {
+            this.setState({ modalOpen: false });
+            return;
+        }
+        const canvasContext = this.canvasRef.current.getContext('2d');
+        this.canvasRef.current.width = this.cameraRef.current.width;
+        this.canvasRef.current.height = this.cameraRef.current.height;
+        canvasContext.drawImage(this.cameraRef.current, 0, 0,
+            this.canvasRef.current.width, this.canvasRef.current.height);
+        const imageDataURL = this.canvasRef.current.toDataURL('image/jpg');
+        this.cameraFeed.getTracks()[0].stop();
+        this.setState({ modalOpen: false, imageSrc: imageDataURL, image: 'webcam' });
+    }
     onSliderValueChange = (event, newValue) => {
-        this.setState({imgHeight: newValue});
+        this.setState({ imgHeight: newValue });
     }
 
     handlePopoverOpen = (event) => {
-        this.setState({anchorEl: event.currentTarget});
+        this.setState({ anchorEl: event.currentTarget });
     }
 
     handlePopoverClose = () => {
-        this.setState({anchorEl: null});
+        this.setState({ anchorEl: null });
     }
 
-    // setImage(element, selectedValue) {
-    //     if (selectedValue === 'file') {
-    //       console.log('file selected');
-    //       this.fileSelect.onchange = (evt) => {
-    //         const f = evt.target.files[0];
-    //         const fileReader = new FileReader();
-    //         fileReader.onload = ((e) => {
-    //           element.src = e.target.result;
-    //         });
-    //         fileReader.readAsDataURL(f);
-    //         this.fileSelect.value = '';
-    //       }
-    //       this.fileSelect.click();
-    //     } else if (selectedValue === 'pic') {
-    //       this.openModal(element);
-    //     } else if (selectedValue === 'random') {
-    //       const randomNumber = Math.floor(Math.random()*links.length);
-    //       element.src = links[randomNumber];
-    //     } else {
-    //       element.src = 'images/' + selectedValue + '.jpg';
-    //     }
-    //   }
-
     render() {
-        const {classes} = this.props;
-        
+        const { classes } = this.props;
+
 
         return (
             <div className='selector-container'>
-                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{display: "none"}} accept="image/x-png,image/jpeg"/>
-                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img"/>
-                <br/>
-                <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
-                    <Typography style={{display:'inline-block', marginRight:'6px'}}>
+                <canvas style={{ display: 'none' }} ref={this.canvasRef} />
+                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{ display: "none" }} accept="image/x-png,image/jpeg" />
+                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img" />
+                <br />
+                <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle' }}>
+                    <Typography style={{ display: 'inline-block', marginRight: '6px' }}>
                         Content Image size
                     </Typography>
-                    <HelpOutlineOutlinedIcon  
-                        fontSize='small' color='action' 
-                        style={{marginBottom:-4}}
+                    <HelpOutlineOutlinedIcon
+                        fontSize='small' color='action'
+                        style={{ marginBottom: -4 }}
                         aria-owns={this.state.anchorEl ? 'mouse-over-popover' : undefined}
                         aria-haspopup="true"
                         onMouseEnter={this.handlePopoverOpen}
-                        onMouseLeave={this.handlePopoverClose}/>
+                        onMouseLeave={this.handlePopoverClose} />
 
                     <Popover
-                            id="mouse-over-popover"
-                            className={classes.popover}
-                            classes={{
+                        id="mouse-over-popover"
+                        className={classes.popover}
+                        classes={{
                             paper: classes.paper,
-                            }}
-                            open={this.state.anchorEl}
-                            anchorEl={this.state.anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                            transformOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                            }}
-                            onClose={this.state.handlePopoverClose}
-                            disableRestoreFocus
-                        >
-                            <Typography style={{maxWidth: 200, textAlign: 'center'}}>A large content image leads to a more detailed output at the cost of increased processing time.</Typography>
-                        </Popover>
+                        }}
+                        open={this.state.anchorEl}
+                        anchorEl={this.state.anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        onClose={this.state.handlePopoverClose}
+                        disableRestoreFocus>
+                        <Typography style={{ maxWidth: 200, textAlign: 'center' }}>A large content image leads to a more detailed output at the cost of increased processing time.</Typography>
+                    </Popover>
                 </div>
-                
-      
-                
-                <Slider 
-                    className={classes.formControl} 
+
+
+
+                <Slider
+                    className={classes.formControl}
                     sliderChangeHandler={this.onSliderValueChange}
                     value={this.state.imgHeight}
                     min={250}
                     max={400}
                     step={1}
-                    disabled={this.props.isDisabled}/>
+                    disabled={this.props.isDisabled} />
                 <FormControl variant="outlined" className={classes.formControl} disabled={this.props.isDisabled}>
                     <InputLabel id="content-label" color='secondary'>Content Image</InputLabel>
                     <Select
@@ -168,6 +201,27 @@ class ContentImageSelector extends React.Component {
                         {this.state.menulist.map(option => (<MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>))}
                     </Select>
                 </FormControl>
+
+                <Dialog
+                    open={this.state.modalOpen}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this.onModalCanceled}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description">
+                    <DialogTitle id="alert-dialog-slide-title">Take a picture</DialogTitle>
+                    <DialogContent>
+                        <video ref={this.cameraRef} width="500" height="400"></video>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.onModalCanceled} color="secondary">
+                            Cancel
+                    </Button>
+                        <Button onClick={this.onCameraCaptureClicked} color="secondary" variant="contained">
+                            Capture
+                    </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     }

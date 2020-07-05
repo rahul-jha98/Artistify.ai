@@ -13,18 +13,18 @@ import Slider from '../CustomSlider/CustomSlider';
 
 const useStyles = (theme) => ({
     formControl: {
-      margin: theme.spacing(1),
-      width: '100%',
-      maxWidth: 600,
-      textAlign: 'left'
+        margin: theme.spacing(1),
+        width: '100%',
+        maxWidth: 600,
+        textAlign: 'left'
     },
     popover: {
-      pointerEvents: 'none',
+        pointerEvents: 'none',
     },
     paper: {
-      padding: theme.spacing(2),
+        padding: theme.spacing(2),
     },
-  });
+});
 
 class StyleImageSelector extends React.Component {
     constructor(props) {
@@ -34,13 +34,13 @@ class StyleImageSelector extends React.Component {
             imageSrc: "./style/seaport.jpg",
             imgHeight: 250,
             menulist: [
-                {value: 'upload', name: "Upload a picture"},
-                {value: 'random', name: 'Random image from wikiart.org'},
-                {value: 'clouds', name: 'Clouds'},
-                {value: 'towers', name: 'Towers'},
-                {value: 'sketch', name: 'Sketch'},
-                {value: 'udnie', name: 'Udnie'},
-                {value: 'seaport', name: 'Seaport'},
+                { value: 'upload', name: "Upload a picture" },
+                { value: 'random', name: 'Random image from wikiart.org' },
+                { value: 'clouds', name: 'Clouds' },
+                { value: 'towers', name: 'Towers' },
+                { value: 'sketch', name: 'Sketch' },
+                { value: 'udnie', name: 'Udnie' },
+                { value: 'seaport', name: 'Seaport' },
             ],
             anchorEl: null
         }
@@ -53,7 +53,7 @@ class StyleImageSelector extends React.Component {
         fileReader.onload = (e) => {
             console.log(e.target.result);
             console.log(file);
-            this.setState({imageSrc: e.target.result, image: 'upload'});
+            this.setState({ imageSrc: e.target.result, image: 'upload' });
         }
         fileReader.readAsDataURL(file);
     }
@@ -64,78 +64,78 @@ class StyleImageSelector extends React.Component {
         } else if (event.target.value === 'upload') {
             this.uploadRef.current.click();
             return;
-        } 
-        this.setState({image: event.target.value, imageSrc: "./style/" + event.target.value + ".jpg"});
+        }
+        this.setState({ image: event.target.value, imageSrc: "./style/" + event.target.value + ".jpg" });
     }
 
     onSliderValueChange = (event, newValue) => {
-        this.setState({imgHeight: newValue});
+        this.setState({ imgHeight: newValue });
     }
 
     handlePopoverOpen = (event) => {
-        this.setState({anchorEl: event.currentTarget});
+        this.setState({ anchorEl: event.currentTarget });
     }
 
     handlePopoverClose = () => {
-        this.setState({anchorEl: null});
+        this.setState({ anchorEl: null });
     }
 
     render() {
-        const {classes} = this.props;
-        
+        const { classes } = this.props;
+
 
         return (
             <div className='selector-container'>
-                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{display: "none"}} accept="image/x-png,image/jpeg"/>
-                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img"/>
-                <br/>
-                <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
-                    <Typography style={{display:'inline-block', marginRight:'6px'}}>
+                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{ display: "none" }} accept="image/x-png,image/jpeg" />
+                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img" />
+                <br />
+                <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle' }}>
+                    <Typography style={{ display: 'inline-block', marginRight: '6px' }}>
                         Style Image size
                     </Typography>
-                    <HelpOutlineOutlinedIcon  
-                        fontSize='small' color='action' 
-                        style={{marginBottom:-4}}
+                    <HelpOutlineOutlinedIcon
+                        fontSize='small' color='action'
+                        style={{ marginBottom: -4 }}
                         aria-owns={this.state.anchorEl ? 'mouse-over-popover' : undefined}
                         aria-haspopup="true"
                         onMouseEnter={this.handlePopoverOpen}
-                        onMouseLeave={this.handlePopoverClose}/>
+                        onMouseLeave={this.handlePopoverClose} />
 
                     <Popover
-                            id="mouse-over-popover"
-                            className={classes.popover}
-                            classes={{
+                        id="mouse-over-popover"
+                        className={classes.popover}
+                        classes={{
                             paper: classes.paper,
-                            }}
-                            open={this.state.anchorEl}
-                            anchorEl={this.state.anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                            transformOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                            }}
-                            onClose={this.state.handlePopoverClose}
-                            disableRestoreFocus
-                        >
-                            <Typography style={{maxWidth: 200, textAlign: 'center'}}>
-                                Changing the size of style image affects the texture seen by the network thus changing the pattern used in generated image. 
+                        }}
+                        open={this.state.anchorEl}
+                        anchorEl={this.state.anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        onClose={this.state.handlePopoverClose}
+                        disableRestoreFocus
+                    >
+                        <Typography style={{ maxWidth: 200, textAlign: 'center' }}>
+                            Changing the size of style image affects the texture seen by the network thus changing the pattern used in generated image.
                             </Typography>
-                        </Popover>
+                    </Popover>
                 </div>
-                
-      
-                
-                <Slider 
-                    className={classes.formControl} 
+
+
+
+                <Slider
+                    className={classes.formControl}
                     sliderChangeHandler={this.onSliderValueChange}
                     value={this.state.imgHeight}
                     min={100}
                     max={400}
                     step={1}
-                    disabled={this.props.isDisabled}/>
+                    disabled={this.props.isDisabled} />
                 <FormControl variant="outlined" className={classes.formControl} disabled={this.props.isDisabled}>
                     <InputLabel id="content-label" color="secondary">Style Image</InputLabel>
                     <Select
