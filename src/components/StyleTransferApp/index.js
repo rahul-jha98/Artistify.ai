@@ -120,12 +120,13 @@ class StyleTransferApp extends React.Component{
                 <br/>
                 <div className='outputs'>
                     <div className='selector-container'>
-                        <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
-                            {this.state.loading > -1 ?
-                                this.state.loading !== 0 ?
+                        {this.state.loading > -1 ?
+                            this.state.loading !== 0 ?
                                 <canvas ref={this.outputRef} className="center margin" height={this.state.height} alt="content_img"/>  :
                                 <Skeleton className="center margin" variant='rect' width={this.state.width} height={this.state.height}/>
-                                : null }
+                            : null }
+                        <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
+                            
                             <Typography style={{display:'inline-block', marginRight:'6px', marginLeft: 5}}>
                                 Stylization Strength
                             </Typography>

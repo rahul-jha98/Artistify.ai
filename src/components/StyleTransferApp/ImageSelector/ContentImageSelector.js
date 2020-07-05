@@ -44,12 +44,24 @@ class ContentImageSelector extends React.Component {
             ],
             anchorEl: null
         }
+        this.uploadRef = React.createRef();
     }
 
+    onFileChange = (evt) => {
+        const file = evt.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+            console.log(e.target.result);
+            console.log(file);
+            this.setState({imageSrc: e.target.result, image: 'upload'});
+        }
+        fileReader.readAsDataURL(file);
+    }
     handleMenu = (event) => {
         if (event.target.value === 'webcam') {
             return;
         } else if (event.target.value === 'upload') {
+            this.uploadRef.current.click();
             return;
         } 
         this.setState({image: event.target.value, imageSrc: "./content/" + event.target.value + ".jpg"});
@@ -67,12 +79,36 @@ class ContentImageSelector extends React.Component {
         this.setState({anchorEl: null});
     }
 
+    // setImage(element, selectedValue) {
+    //     if (selectedValue === 'file') {
+    //       console.log('file selected');
+    //       this.fileSelect.onchange = (evt) => {
+    //         const f = evt.target.files[0];
+    //         const fileReader = new FileReader();
+    //         fileReader.onload = ((e) => {
+    //           element.src = e.target.result;
+    //         });
+    //         fileReader.readAsDataURL(f);
+    //         this.fileSelect.value = '';
+    //       }
+    //       this.fileSelect.click();
+    //     } else if (selectedValue === 'pic') {
+    //       this.openModal(element);
+    //     } else if (selectedValue === 'random') {
+    //       const randomNumber = Math.floor(Math.random()*links.length);
+    //       element.src = links[randomNumber];
+    //     } else {
+    //       element.src = 'images/' + selectedValue + '.jpg';
+    //     }
+    //   }
+
     render() {
         const {classes} = this.props;
         
 
         return (
             <div className='selector-container'>
+                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{display: "none"}} accept="image/x-png,image/jpeg"/>
                 <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img"/>
                 <br/>
                 <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>

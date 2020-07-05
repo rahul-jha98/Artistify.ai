@@ -40,7 +40,7 @@ export default (props) => {
             <div className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
-                        <Link to='/lite' replace style={{textDecoration: 'none'}}>
+                        <Link to='/lite' style={{textDecoration: 'none'}}>
                             <Card raised elvation={6} className={classes.paper}>
                                 <Typography variant='h5' gutterBottom>
                                     Lite Mode
@@ -60,7 +60,7 @@ export default (props) => {
                         </Link>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Link to='/pro' replace style={{textDecoration: 'none'}}>
+                        <Link to='/pro' style={{textDecoration: 'none'}}>
                             <Card raised elvation={6} className={classes.paper}>
                                 <Typography variant='h5' gutterBottom>
                                     Pro Mode

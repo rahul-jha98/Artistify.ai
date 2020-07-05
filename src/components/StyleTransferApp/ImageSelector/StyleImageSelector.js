@@ -44,12 +44,25 @@ class StyleImageSelector extends React.Component {
             ],
             anchorEl: null
         }
+        this.uploadRef = React.createRef();
+    }
+
+    onFileChange = (evt) => {
+        const file = evt.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+            console.log(e.target.result);
+            console.log(file);
+            this.setState({imageSrc: e.target.result, image: 'upload'});
+        }
+        fileReader.readAsDataURL(file);
     }
 
     handleMenu = (event) => {
         if (event.target.value === 'random') {
             return;
         } else if (event.target.value === 'upload') {
+            this.uploadRef.current.click();
             return;
         } 
         this.setState({image: event.target.value, imageSrc: "./style/" + event.target.value + ".jpg"});
@@ -73,6 +86,7 @@ class StyleImageSelector extends React.Component {
 
         return (
             <div className='selector-container'>
+                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{display: "none"}} accept="image/x-png,image/jpeg"/>
                 <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img"/>
                 <br/>
                 <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle'}}>
