@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e11c31259d3716be9d55f8d990e753d5",
+    "revision": "1a57a05d8eab75187ddd530040f5f826",
     "url": "/Artistify.ai/index.html"
   },
   {
-    "revision": "40a10048d2456ba60b44",
+    "revision": "b5f675f2e2ee6012ae7c",
     "url": "/Artistify.ai/static/css/main.0e8aeb83.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Artistify.ai/static/js/2.164243ed.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "40a10048d2456ba60b44",
-    "url": "/Artistify.ai/static/js/main.10ce1bfd.chunk.js"
+    "revision": "b5f675f2e2ee6012ae7c",
+    "url": "/Artistify.ai/static/js/main.cd4e6ebc.chunk.js"
   },
   {
     "revision": "72653139ee1cb0fdf7b3",
