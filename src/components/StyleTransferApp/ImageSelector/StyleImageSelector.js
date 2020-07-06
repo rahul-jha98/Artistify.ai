@@ -10,6 +10,7 @@ import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import Popover from '@material-ui/core/Popover';
 
 import Slider from '../CustomSlider/CustomSlider';
+import allLinks from './wikiartLinks';
 
 const useStyles = (theme) => ({
     formControl: {
@@ -36,7 +37,9 @@ class StyleImageSelector extends React.Component {
             menulist: [
                 { value: 'upload', name: "Upload a picture" },
                 { value: 'random', name: 'Random image from wikiart.org' },
+                { value: 'comic', name: "Comic" },
                 { value: 'clouds', name: 'Clouds' },
+                { value: 'lion', name: "Colorful Lion" },
                 { value: 'towers', name: 'Towers' },
                 { value: 'sketch', name: 'Sketch' },
                 { value: 'udnie', name: 'Udnie' },
@@ -59,13 +62,23 @@ class StyleImageSelector extends React.Component {
     }
 
     handleMenu = (event) => {
-        if (event.target.value === 'random') {
+        let choice = event.target.value;
+        if (choice === undefined) {
             return;
-        } else if (event.target.value === 'upload') {
+        } else if (choice === 0) {
+            choice = this.state.image;
+        }
+        console.log(choice);
+        if (choice === 'random') {
+            const index = Math.floor(Math.random() * allLinks.length);
+            console.log(allLinks[index]);
+            this.setState({ image: 'random', imageSrc: allLinks[index] })
+            return;
+        } else if (choice === 'upload') {
             this.uploadRef.current.click();
             return;
         }
-        this.setState({ image: event.target.value, imageSrc: "./style/" + event.target.value + ".jpg" });
+        this.setState({ image: choice, imageSrc: "./style/" + choice + ".jpg" });
     }
 
     onSliderValueChange = (event, newValue) => {
@@ -86,8 +99,8 @@ class StyleImageSelector extends React.Component {
 
         return (
             <div className='selector-container'>
-                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{ display: "none" }} accept="image/x-png,image/jpeg" />
-                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img" />
+                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{ display: "none" }} accept="image/x-png,image/jpeg,.png, jpg, jpeg" />
+                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="style_img" />
                 <br />
                 <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle' }}>
                     <Typography style={{ display: 'inline-block', marginRight: '6px' }}>
@@ -142,7 +155,7 @@ class StyleImageSelector extends React.Component {
                         labelId="content-label"
                         id="content-select"
                         value={this.state.image}
-                        onChange={this.handleMenu}
+                        onClick={this.handleMenu}
                         color="secondary"
                         label="Style Image">
                         {this.state.menulist.map(option => (<MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>))}

@@ -46,10 +46,12 @@ class ContentImageSelector extends React.Component {
             menulist: [
                 { value: 'webcam', name: "Take a picture" },
                 { value: 'upload', name: "Upload a picture" },
+                { value: 'brad_pitt', name: "Brad Pitt" },
+                { value: 'museum', name: "Museum" },
                 { value: 'chicago', name: 'Chicago' },
-                { value: 'diana', name: 'Diana' },
                 { value: 'golden_gate', name: 'Golden Gate' },
                 { value: 'stata', name: 'Stata' },
+                { value: 'woman', name: "Woman" },
                 { value: 'statue_of_liberty', name: 'Statue of Liberty' },
             ],
             anchorEl: null,
@@ -76,7 +78,13 @@ class ContentImageSelector extends React.Component {
         fileReader.readAsDataURL(file);
     }
     handleMenu = (event) => {
-        if (event.target.value === 'webcam') {
+        let choice = event.target.value;
+        if (choice === undefined) {
+            return;
+        } else if (choice === 0) {
+            choice = this.state.image;
+        }
+        if (choice === 'webcam') {
             this.setState({ modalOpen: true });
             navigator.getUserMedia(
                 {
@@ -92,11 +100,11 @@ class ContentImageSelector extends React.Component {
                 }
             );
             return;
-        } else if (event.target.value === 'upload') {
+        } else if (choice === 'upload') {
             this.uploadRef.current.click();
             return;
         }
-        this.setState({ image: event.target.value, imageSrc: "./content/" + event.target.value + ".jpg" });
+        this.setState({ image: choice, imageSrc: "./content/" + choice + ".jpg" });
     }
 
 
@@ -142,7 +150,7 @@ class ContentImageSelector extends React.Component {
         return (
             <div className='selector-container'>
                 <canvas style={{ display: 'none' }} ref={this.canvasRef} />
-                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{ display: "none" }} accept="image/x-png,image/jpeg" />
+                <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{ display: "none" }} accept="image/x-png,image/jpeg,.png, jpg, jpeg" />
                 <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="content_img" />
                 <br />
                 <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle' }}>

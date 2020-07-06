@@ -66,7 +66,8 @@ class StyleTransferModel {
             await tf.browser.toPixels(stylizedImage, this.outputRef.current);
             features.dispose(); 
             stylizedImage.dispose();
-        } catch {
+        } catch (err) {
+            console.log(err);
             onError();
         }
 
