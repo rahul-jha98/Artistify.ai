@@ -1,4 +1,29 @@
-![](./logowithtext.svg)
+<img src="../assets/Home.png" height="300">
+
+**Web-app to convert your images into art**
+
+## About
+Artistify.ai is a web-app that implements neural style transfer right in your browser. At its very core it is a tensorflow.js model 
+that implements neural style transfer. So, like any other neural style transfer based model it takes a content image and a style image 
+and returns a content image that is **drawn** following the style of style image. So, with an art piece as style image we can convert a normal
+content image into an its **artistified** version. 
+
+Then useing React.js and following Google's material-design guidelines, it provides an easy to use and polished interface to interact with the 
+model and use it as a full fledged web-app.
+
+> **Checkout the website live at** : https://rahul-jha98.github.io/Artistify.ai/
+
+## Some screenshots
+
+### Home screen
+![Screenshot Home](../assets/Home.png)
+
+### Lite Version
+![Screenshot Lite](../assets/Lite.png)
+
+### Pro Version
+![Screenshot Pro](../assets/Pro.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
