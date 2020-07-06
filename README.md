@@ -1,4 +1,4 @@
-<img src="../assets/Home.png" height="300">
+<img src="../assets/logowithtext.png">
 
 **Web-app to convert your images into art**
 
