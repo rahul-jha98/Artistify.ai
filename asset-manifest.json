@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Artistify.ai/static/css/main.0e8aeb83.chunk.css",
-    "main.js": "/Artistify.ai/static/js/main.cd4e6ebc.chunk.js",
-    "main.js.map": "/Artistify.ai/static/js/main.cd4e6ebc.chunk.js.map",
+    "main.js": "/Artistify.ai/static/js/main.f0df235a.chunk.js",
+    "main.js.map": "/Artistify.ai/static/js/main.f0df235a.chunk.js.map",
     "runtime-main.js": "/Artistify.ai/static/js/runtime-main.88a360a8.js",
     "runtime-main.js.map": "/Artistify.ai/static/js/runtime-main.88a360a8.js.map",
     "static/js/2.164243ed.chunk.js": "/Artistify.ai/static/js/2.164243ed.chunk.js",
     "static/js/2.164243ed.chunk.js.map": "/Artistify.ai/static/js/2.164243ed.chunk.js.map",
     "index.html": "/Artistify.ai/index.html",
-    "precache-manifest.b868bf4b162dc27e0279868b41f7a5a0.js": "/Artistify.ai/precache-manifest.b868bf4b162dc27e0279868b41f7a5a0.js",
+    "precache-manifest.4ba7fed0e64f1a85291a8e3d5d0f8ee4.js": "/Artistify.ai/precache-manifest.4ba7fed0e64f1a85291a8e3d5d0f8ee4.js",
     "service-worker.js": "/Artistify.ai/service-worker.js",
     "static/css/main.0e8aeb83.chunk.css.map": "/Artistify.ai/static/css/main.0e8aeb83.chunk.css.map",
     "static/js/2.164243ed.chunk.js.LICENSE.txt": "/Artistify.ai/static/js/2.164243ed.chunk.js.LICENSE.txt",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.88a360a8.js",
     "static/js/2.164243ed.chunk.js",
     "static/css/main.0e8aeb83.chunk.css",
-    "static/js/main.cd4e6ebc.chunk.js"
+    "static/js/main.f0df235a.chunk.js"
   ]
 }
