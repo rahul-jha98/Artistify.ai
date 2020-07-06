@@ -100,7 +100,7 @@ class StyleImageSelector extends React.Component {
         return (
             <div className='selector-container'>
                 <input ref={this.uploadRef} type="file" id="file" onChange={this.onFileChange} style={{ display: "none" }} accept="image/x-png,image/jpeg,.png, jpg, jpeg" />
-                <img ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="style_img" />
+                <img crossorigin="anonymous" ref={this.props.refObject} className="center" src={this.state.imageSrc} height={this.state.imgHeight} alt="style_img" />
                 <br />
                 <div className={classes.formControl} style={{ marginBottom: '.1rem', display: 'inline-block', verticalAlign: 'middle' }}>
                     <Typography style={{ display: 'inline-block', marginRight: '6px' }}>
